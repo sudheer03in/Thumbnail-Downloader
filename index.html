@@ -3,90 +3,125 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HD Thumbnail Downloader | Step-by-Step Guide</title>
+    <title>Ultimate YouTube Downloader | MP3, MP4 & Thumbnail</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #ffffff; color: #000000; margin: 0; padding: 20px; line-height: 1.6; }
-        .container { max-width: 700px; margin: 40px auto; text-align: center; }
-        h1 { font-size: 2.2rem; font-weight: 800; margin-bottom: 10px; }
-        p.subtitle { color: #555; margin-bottom: 30px; }
+        body { font-family: 'Segoe UI', sans-serif; background: #ffffff; color: #000; margin: 0; padding: 20px; line-height: 1.6; }
+        .container { max-width: 800px; margin: 40px auto; text-align: center; }
+        h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 5px; }
+        .search-box { display: flex; flex-direction: column; gap: 15px; margin: 30px 0; }
+        input { padding: 18px; border: 2px solid #000; border-radius: 12px; font-size: 16px; outline: none; }
         
-        .search-box { display: flex; flex-direction: column; gap: 15px; margin-bottom: 30px; }
-        input { padding: 15px; border: 2px solid #000; border-radius: 10px; font-size: 16px; outline: none; }
-        button { background: #000; color: #fff; border: none; padding: 15px; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; }
-        
-        #result { display: none; margin-top: 30px; padding: 20px; border: 1px solid #eee; border-radius: 15px; }
-        img { width: 100%; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-        
-        .download-btn { display: inline-block; margin-top: 20px; background: #2ecc71; color: white; text-decoration: none; padding: 12px 30px; border-radius: 8px; font-weight: bold; cursor: pointer; border: none; }
+        .btn-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+        .btn { padding: 15px; border-radius: 10px; font-weight: bold; cursor: pointer; border: none; font-size: 14px; transition: 0.3s; }
+        .btn-mp4 { background: #ff0000; color: #fff; }
+        .btn-mp3 { background: #000; color: #fff; }
+        .btn-thumb { background: #f0f0f0; color: #000; border: 1px solid #000; }
+        .btn:hover { opacity: 0.8; transform: translateY(-2px); }
 
-        .guide-section { margin-top: 60px; text-align: left; background: #fafafa; padding: 25px; border-radius: 15px; border: 1px solid #eaeaea; }
-        .guide-item { display: flex; align-items: center; margin-bottom: 15px; gap: 15px; }
-        .icon { font-size: 24px; background: #fff; padding: 10px; border-radius: 50%; border: 1px solid #ddd; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; }
-        .guide-text { font-size: 15px; color: #333; }
+        #result { display: none; margin-top: 30px; padding: 20px; border: 2px solid #eee; border-radius: 15px; }
+        img { width: 100%; border-radius: 10px; margin-bottom: 15px; }
+        .download-now { background: #2ecc71; color: white; padding: 12px 25px; border-radius: 8px; text-decoration: none; font-weight: bold; display: inline-block; margin-top: 10px; }
+
+        .hints-section { margin-top: 60px; text-align: left; background: #fafafa; padding: 25px; border-radius: 15px; border: 1px solid #000; }
+        .hint-card { display: flex; align-items: flex-start; margin-bottom: 20px; gap: 15px; }
+        .hint-icon { font-size: 24px; }
+        .hint-text h4 { margin: 0; font-size: 16px; }
+        .hint-text p { margin: 5px 0 0; font-size: 14px; color: #444; }
+
+        @media (max-width: 600px) { .btn-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1>HD Thumbnail Downloader</h1>
-        <p class="subtitle">YouTube video ka link dalo aur HD image download karo.</p>
+        <h1>YouTube Master Tool</h1>
+        <p>Download Video, Audio, and Thumbnails in one click.</p>
 
         <div class="search-box">
-            <input type="text" id="videoUrl" placeholder="Yahan link paste karein...">
-            <button onclick="getThumbnail()">Show Thumbnail</button>
+            <input type="text" id="videoUrl" placeholder="YouTube link yahan paste karein...">
+            <div class="btn-grid">
+                <button class="btn btn-mp4" onclick="downloadLogic('mp4')">🎬 Download MP4</button>
+                <button class="btn btn-mp3" onclick="downloadLogic('mp3')">🎵 Download MP3</button>
+                <button class="btn btn-thumb" onclick="showThumb()">🖼️ Get Thumbnail</button>
+            </div>
         </div>
 
         <div id="result">
-            <img id="thumbImg" src="" alt="Thumbnail">
-            <button class="download-btn" onclick="downloadImage()">⬇️ Download HD Image</button>
+            <img id="thumbImg" src="" alt="Thumbnail Preview">
+            <p id="resultText" style="font-weight: bold;"></p>
+            <button class="download-now" id="finalDownloadBtn" onclick="forceDownloadThumb()">Download HD Image</button>
         </div>
 
-        <div class="guide-section">
-            <h2 style="text-align: center; margin-bottom: 25px;">Download Kaise Karein? (3 Steps)</h2>
+        <div class="hints-section">
+            <h2 style="text-align: center;">💡 Helpful Hints (Kaise Download Karein?)</h2>
             
-            <div class="guide-item">
-                <div class="icon">🔗</div>
-                <div class="guide-text"><b>Step 1:</b> YouTube App par jao, video ka <b>'Share'</b> button dabao aur <b>'Copy Link'</b> karo.</div>
+            <div class="hint-card">
+                <div class="hint-icon">🎥</div>
+                <div class="hint-text">
+                    <h4>Video (MP4) Download Hint:</h4>
+                    <p>MP4 button dabane par aap ek naye safe page par jayenge, wahan quality (720p, 1080p) chunein aur download karein.</p>
+                </div>
             </div>
 
-            <div class="guide-item">
-                <div class="icon">📥</div>
-                <div class="guide-text"><b>Step 2:</b> Is website par aakar link ko box mein <b>Paste</b> karein aur button dabayein.</div>
+            <div class="hint-card">
+                <div class="hint-icon">🎶</div>
+                <div class="hint-text">
+                    <h4>Audio (MP3) Download Hint:</h4>
+                    <p>Agar aapko sirf gana chahiye, toh MP3 button dabayein. Ye video ko music file mein badal dega.</p>
+                </div>
             </div>
 
-            <div class="guide-item">
-                <div class="icon">🖼️</div>
-                <div class="guide-text"><b>Step 3:</b> Thumbnail dikhne par <b>'Download HD Image'</b> par click karein. Aapka photo gallery mein save ho jayega.</div>
+            <div class="hint-card">
+                <div class="hint-icon">🖼️</div>
+                <div class="hint-text">
+                    <h4>Thumbnail Download Hint:</h4>
+                    <p>Thumbnail button dabate hi photo niche dikhegi. Use gallery mein save karne ke liye 'Download HD Image' dabayein.</p>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        function getThumbnail() {
-            let url = document.getElementById('videoUrl').value;
-            let videoId = "";
-            if (url.includes("v=")) { videoId = url.split("v=")[1].substring(0, 11); }
-            else if (url.includes("youtu.be/")) { videoId = url.split("youtu.be/")[1].substring(0, 11); }
-
-            if (videoId) {
-                let imgUrl = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
-                document.getElementById('thumbImg').src = imgUrl;
-                document.getElementById('result').style.display = "block";
-            } else { alert("Sahi link dalo bhai!"); }
+        function extractID(url) {
+            let regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+            let match = url.match(regExp);
+            return (match && match[2].length == 11) ? match[2] : false;
         }
 
-        async function downloadImage() {
+        function downloadLogic(type) {
+            let url = document.getElementById('videoUrl').value;
+            if (!url) { alert("Pehle link toh dalo bhai!"); return; }
+
+            if (type === 'mp4') {
+                window.open(`https://en.savefrom.net/1-youtube-video-downloader-525/?url=${url}`, '_blank');
+            } else if (type === 'mp3') {
+                window.open(`https://ytmp3.cc/en/search/?q=${url}`, '_blank');
+            }
+        }
+
+        function showThumb() {
+            let url = document.getElementById('videoUrl').value;
+            let id = extractID(url);
+            if (id) {
+                let imgUrl = `https://img.youtube.com/vi/${id}/maxresdefault.jpg`;
+                document.getElementById('thumbImg').src = imgUrl;
+                document.getElementById('result').style.display = "block";
+                document.getElementById('resultText').innerText = "Thumbnail Ready Hai!";
+                document.getElementById('finalDownloadBtn').style.display = "inline-block";
+            } else { alert("Sahi YouTube link dalo!"); }
+        }
+
+        async function forceDownloadThumb() {
             const imageSrc = document.getElementById('thumbImg').src;
             const response = await fetch(imageSrc);
             const blob = await response.blob();
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
-            a.style.display = 'none';
             a.href = url;
             a.download = 'youtube-thumbnail.jpg';
             document.body.appendChild(a);
             a.click();
-            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
         }
     </script>
 </body>
