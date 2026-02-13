@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pro YouTube Thumbnail Downloader</title>
+    <style>
+        body { font-family: 'Inter', sans-serif; background: #f4f4f9; text-align: center; padding: 20px; }
+        .container { max-width: 600px; margin: auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        h1 { color: #ff0000; }
+        input { width: 100%; padding: 15px; margin: 20px 0; border: 2px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+        button { background: #ff0000; color: white; border: none; padding: 15px 30px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; }
+        #result { margin-top: 30px; display: none; }
+        img { width: 100%; border-radius: 10px; margin-bottom: 15px; }
+        .download-btn { background: #28a745; text-decoration: none; display: block; padding: 10px; color: white; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>YouTube Thumbnail Downloader</h1>
+        <p>Video ka link niche paste karein:</p>
+        <input type="text" id="videoUrl" placeholder="https://www.youtube.com/watch?v=...">
+        <button onclick="getThumbnail()">Get Thumbnail</button>
+
+        <div id="result">
+            <img id="thumbImg" src="" alt="Thumbnail">
+            <a id="downloadLink" class="download-btn" href="" download="thumbnail.jpg">Download HD Thumbnail</a>
+        </div>
+    </div>
+
+    <script>
+        function getThumbnail() {
+            let url = document.getElementById('videoUrl').value;
+            let videoId = "";
+            if (url.includes("v=")) { videoId = url.split("v=")[1].substring(0, 11); }
+            else if (url.includes("youtu.be/")) { videoId = url.split("youtu.be/")[1].substring(0, 11); }
+
+            if (videoId) {
+                let imgUrl = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+                document.getElementById('thumbImg').src = imgUrl;
+                document.getElementById('downloadLink').href = imgUrl;
+                document.getElementById('result').style.display = "block";
+            } else { alert("Please enter a valid YouTube URL"); }
+        }
+    </script>
+</body>
+</html>
