@@ -3,99 +3,178 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Master Downloader | MP3, MP4 & Thumbnail</title>
+    <title>Pro Thumbnail Downloader | HD & Fast</title>
     <style>
-        body { font-family: 'Inter', sans-serif; background: #ffffff; color: #000; margin: 0; padding: 20px; }
-        .wrapper { max-width: 650px; margin: 50px auto; border: 3px solid #000; border-radius: 20px; padding: 30px; box-shadow: 15px 15px 0px #000; }
-        h1 { font-size: 2.5rem; text-transform: uppercase; letter-spacing: -1px; margin-bottom: 5px; }
-        .input-group { margin: 30px 0; }
-        input { width: 100%; padding: 18px; border: 3px solid #000; border-radius: 12px; font-size: 16px; box-sizing: border-box; font-weight: bold; }
-        
-        .action-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .btn { padding: 18px; border: 3px solid #000; border-radius: 12px; font-weight: 900; cursor: pointer; text-transform: uppercase; transition: 0.2s; }
-        .btn-black { background: #000; color: #fff; }
-        .btn-white { background: #fff; color: #000; }
-        .btn:hover { transform: translate(-3px, -3px); box-shadow: 5px 5px 0px #000; }
-        .btn:active { transform: translate(0, 0); box-shadow: none; }
+        /* General Setup */
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background: #ffffff; 
+            color: #000; 
+            margin: 0; 
+            padding: 20px; 
+            display: flex;
+            justify-content: center;
+        }
 
-        #display-area { display: none; margin-top: 30px; border-top: 3px solid #000; padding-top: 20px; }
-        #display-area img { width: 100%; border: 3px solid #000; border-radius: 15px; }
-        
-        .instructions { margin-top: 40px; text-align: left; background: #eee; padding: 20px; border-radius: 12px; border: 2px solid #000; }
-        .step { margin-bottom: 10px; display: flex; align-items: center; gap: 10px; font-weight: bold; }
+        /* Container with Heavy Shadow */
+        .wrapper { 
+            max-width: 500px; 
+            width: 100%;
+            margin-top: 50px; 
+            border: 4px solid #000; 
+            border-radius: 24px; 
+            padding: 30px; 
+            box-shadow: 12px 12px 0px #000;
+            transition: all 0.3s ease;
+        }
+
+        h1 { 
+            font-size: 2.2rem; 
+            text-transform: uppercase; 
+            margin-bottom: 5px; 
+            font-weight: 900;
+            letter-spacing: -1px;
+        }
+
+        p { font-weight: 600; color: #444; }
+
+        /* Input Styling */
+        .input-area { margin: 30px 0; }
+        input { 
+            width: 100%; 
+            padding: 18px; 
+            border: 3px solid #000; 
+            border-radius: 12px; 
+            font-size: 16px; 
+            box-sizing: border-box; 
+            outline: none;
+            transition: 0.3s;
+        }
+        input:focus { box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+
+        /* Button Animation */
+        .get-btn { 
+            width: 100%;
+            padding: 18px; 
+            background: #000; 
+            color: #fff; 
+            border: none; 
+            border-radius: 12px; 
+            font-size: 18px; 
+            font-weight: 900; 
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .get-btn:hover {
+            transform: translate(-4px, -4px);
+            box-shadow: 6px 6px 0px #555;
+        }
+
+        .get-btn:active {
+            transform: translate(0px, 0px);
+            box-shadow: none;
+        }
+
+        /* Result Area Animation */
+        #result-area { 
+            display: none; 
+            margin-top: 30px; 
+            border-top: 3px solid #eee; 
+            padding-top: 20px; 
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        img { 
+            width: 100%; 
+            border: 3px solid #000; 
+            border-radius: 16px; 
+            margin-bottom: 20px;
+        }
+
+        .dl-link {
+            display: block;
+            background: #fff;
+            color: #000;
+            border: 3px solid #000;
+            padding: 15px;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 900;
+            transition: 0.2s;
+        }
+
+        .dl-link:hover { background: #000; color: #fff; }
+
+        /* Guide Icons */
+        .guide { margin-top: 40px; text-align: left; font-size: 14px; }
+        .step { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
     </style>
 </head>
 <body>
 
 <div class="wrapper">
-    <h1>DOWNLOADER</h1>
-    <p>Premium High-Speed Video & Audio Tool</p>
+    <h1>THUMBNAIL</h1>
+    <p>Get any YouTube Thumbnail in Ultra HD.</p>
 
-    <div class="input-group">
-        <input type="text" id="targetUrl" placeholder="Paste YouTube Link Here...">
+    <div class="input-area">
+        <input type="text" id="urlInput" placeholder="Paste Video Link Here...">
     </div>
 
-    <div class="action-btns">
-        <button class="btn btn-black" onclick="startConvert('mp4')">Get Video</button>
-        <button class="btn btn-black" onclick="startConvert('mp3')">Get Audio</button>
-        <button class="btn btn-white" style="grid-column: span 2;" onclick="loadPreview()">Show Thumbnail & Info</button>
+    <button class="get-btn" onclick="fetchThumb()">Get Thumbnail</button>
+
+    <div id="result-area">
+        <img id="thumbPreview" src="" alt="Thumbnail">
+        <button class="dl-link" style="width:100%; cursor:pointer;" onclick="downloadAction()">⬇️ DOWNLOAD HD IMAGE</button>
+        <p style="font-size: 12px; margin-top: 10px;">Note: Mobile users can long-press the image to save.</p>
     </div>
 
-    <div id="display-area">
-        <img id="previewPic" src="" alt="Thumbnail">
-        <div id="download-links" style="margin-top: 20px;">
-            <p id="loading-msg" style="font-weight: bold;"></p>
-            <a id="final-link" class="btn btn-black" style="display:none; text-decoration:none; text-align:center;">Click to Download File</a>
-        </div>
-    </div>
-
-    <div class="instructions">
-        <div class="step"><span>01.</span> Link Paste Karein.</div>
-        <div class="step"><span>02.</span> Video ya Audio par click karein.</div>
-        <div class="step"><span>03.</span> Thumbnail ko "Long Press" karke save karein.</div>
+    <div class="guide">
+        <div class="step">🔗 <b>Copy</b> YouTube Video Link.</div>
+        <div class="step">📥 <b>Paste</b> in the box & press button.</div>
+        <div class="step">💾 <b>Save</b> the High-Quality image.</div>
     </div>
 </div>
 
 <script>
-    function loadPreview() {
-        let url = document.getElementById('targetUrl').value;
-        let id = extractID(url);
-        if(id) {
-            document.getElementById('previewPic').src = `https://img.youtube.com/vi/${id}/maxresdefault.jpg`;
-            document.getElementById('display-area').style.display = 'block';
-            document.getElementById('loading-msg').innerText = "Thumbnail Loaded! Long press to save.";
-            document.getElementById('final-link').style.display = 'none';
-        } else { alert("Bhai sahi link dalo!"); }
-    }
-
-    function startConvert(type) {
-        let url = document.getElementById('targetUrl').value;
-        if(!url) { alert("Pehle link dalo!"); return; }
+    function fetchThumb() {
+        let val = document.getElementById('urlInput').value;
+        let id = "";
         
-        document.getElementById('display-area').style.display = 'block';
-        document.getElementById('loading-msg').innerText = "⚙️ Processing... Please Wait";
-        document.getElementById('final-link').style.display = 'none';
+        if(val.includes("v=")) { id = val.split("v=")[1].split("&")[0]; }
+        else if(val.includes("youtu.be/")) { id = val.split("youtu.be/")[1].split("?")[0]; }
 
-        // Ye API bina redirection ke kaam karne ki koshish karegi
-        setTimeout(() => {
-            document.getElementById('loading-msg').innerText = "✅ File Ready!";
-            let dBtn = document.getElementById('final-link');
-            dBtn.style.display = 'block';
-            
-            // Sabse stable downloading service ka use
-            if(type === 'mp4') {
-                dBtn.href = `https://9xbuddy.com/download?url=${url}`;
-            } else {
-                dBtn.href = `https://ytmp3.nu/en114/`;
-            }
-            dBtn.target = "_blank";
-        }, 1500);
+        if(id) {
+            let imgUrl = `https://img.youtube.com/vi/${id}/maxresdefault.jpg`;
+            document.getElementById('thumbPreview').src = imgUrl;
+            document.getElementById('result-area').style.display = 'block';
+        } else {
+            alert("Bhai, pehle sahi link toh daalo!");
+        }
     }
 
-    function extractID(url) {
-        let reg = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-        let m = url.match(reg);
-        return (m && m[2].length == 11) ? m[2] : false;
+    async function downloadAction() {
+        const img = document.getElementById('thumbPreview');
+        try {
+            const response = await fetch(img.src);
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'thumbnail.jpg';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        } catch (e) {
+            window.open(img.src, '_blank');
+        }
     }
 </script>
 
