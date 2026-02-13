@@ -3,28 +3,109 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pro YouTube Thumbnail Downloader</title>
+    <title>HD YouTube Thumbnail Downloader | Fast & Free</title>
     <style>
-        body { font-family: 'Inter', sans-serif; background: #f4f4f9; text-align: center; padding: 20px; }
-        .container { max-width: 600px; margin: auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
-        h1 { color: #ff0000; }
-        input { width: 100%; padding: 15px; margin: 20px 0; border: 2px solid #ddd; border-radius: 8px; box-sizing: border-box; }
-        button { background: #ff0000; color: white; border: none; padding: 15px 30px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; }
-        #result { margin-top: 30px; display: none; }
-        img { width: 100%; border-radius: 10px; margin-bottom: 15px; }
-        .download-btn { background: #28a745; text-decoration: none; display: block; padding: 10px; color: white; border-radius: 5px; }
+        body { 
+            font-family: 'Inter', -apple-system, sans-serif; 
+            background-color: #ffffff; 
+            color: #1d1d1f; 
+            margin: 0; 
+            padding: 20px; 
+            line-height: 1.6;
+        }
+        .container { 
+            max-width: 800px; 
+            margin: 40px auto; 
+            text-align: center;
+        }
+        h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 10px; }
+        p.subtitle { color: #6e6e73; margin-bottom: 30px; }
+        
+        .search-box {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+        input { 
+            padding: 18px; 
+            border: 2px solid #e5e5e7; 
+            border-radius: 12px; 
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        input:focus { border-color: #1d1d1f; }
+        
+        button { 
+            background: #1d1d1f; 
+            color: white; 
+            border: none; 
+            padding: 18px; 
+            border-radius: 12px; 
+            font-size: 16px; 
+            font-weight: 600; 
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+        button:hover { opacity: 0.9; }
+
+        #result { 
+            display: none; 
+            margin-top: 40px; 
+            border-top: 1px solid #e5e5e7; 
+            padding-top: 40px; 
+        }
+        img { width: 100%; border-radius: 16px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+        
+        .download-btn { 
+            display: inline-block;
+            margin-top: 20px;
+            background: #0071e3; 
+            color: white; 
+            text-decoration: none; 
+            padding: 15px 40px; 
+            border-radius: 30px; 
+            font-weight: 600; 
+        }
+
+        .guide-section {
+            margin-top: 80px;
+            text-align: left;
+            background: #f5f5f7;
+            padding: 30px;
+            border-radius: 20px;
+        }
+        .guide-section h2 { margin-top: 0; }
+        .steps { padding-left: 20px; }
+        .steps li { margin-bottom: 10px; font-weight: 500; }
     </style>
 </head>
 <body>
+
     <div class="container">
-        <h1>YouTube Thumbnail Downloader</h1>
-        <p>Video ka link niche paste karein:</p>
-        <input type="text" id="videoUrl" placeholder="https://www.youtube.com/watch?v=...">
-        <button onclick="getThumbnail()">Get Thumbnail</button>
+        <h1>Thumbnail Downloader</h1>
+        <p class="subtitle">Download any YouTube video thumbnail in Ultra HD Quality.</p>
+
+        <div class="search-box">
+            <input type="text" id="videoUrl" placeholder="YouTube video link yahan paste karein...">
+            <button onclick="getThumbnail()">Get HD Thumbnail</button>
+        </div>
 
         <div id="result">
-            <img id="thumbImg" src="" alt="Thumbnail">
-            <a id="downloadLink" class="download-btn" href="" download="thumbnail.jpg">Download HD Thumbnail</a>
+            <img id="thumbImg" src="" alt="YouTube Thumbnail">
+            <a id="downloadLink" class="download-btn" href="" target="_blank" download="thumbnail.jpg">Download Image</a>
+        </div>
+
+        <div class="guide-section">
+            <h2>YouTube Thumbnail Kaise Download Karein?</h2>
+            <ul class="steps">
+                <li>Sabse pehle YouTube par jayein aur wo video kholein jiska thumbnail aapko chahiye.</li>
+                <li>Video ke 'Share' button par click karke uska <b>Link Copy</b> karein.</li>
+                <li>Ab hamari website par aakar us link ko upar diye gaye box mein paste karein.</li>
+                <li>'Get HD Thumbnail' button par click karein.</li>
+                <li>Thumbnail niche dikh jayega, ab 'Download Image' par click karke use save kar lein.</li>
+            </ul>
         </div>
     </div>
 
@@ -40,7 +121,10 @@
                 document.getElementById('thumbImg').src = imgUrl;
                 document.getElementById('downloadLink').href = imgUrl;
                 document.getElementById('result').style.display = "block";
-            } else { alert("Please enter a valid YouTube URL"); }
+                window.scrollTo({ top: document.getElementById('result').offsetTop, behavior: 'smooth' });
+            } else { 
+                alert("Bhai, sahi YouTube URL toh daalo!"); 
+            }
         }
     </script>
 </body>
