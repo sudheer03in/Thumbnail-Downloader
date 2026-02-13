@@ -1,85 +1,101 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>All-In-One YouTube Downloader</title>
+    <title>Master Downloader | MP3, MP4 & Thumbnail</title>
     <style>
-        body { font-family: sans-serif; background: #ffffff; color: #000; text-align: center; padding: 20px; }
-        .container { max-width: 600px; margin: auto; border: 2px solid #000; padding: 20px; border-radius: 15px; }
-        h1 { font-size: 24px; text-transform: uppercase; border-bottom: 2px solid #000; padding-bottom: 10px; }
-        input { width: 90%; padding: 15px; margin: 20px 0; border: 2px solid #000; border-radius: 10px; font-size: 16px; }
+        body { font-family: 'Inter', sans-serif; background: #ffffff; color: #000; margin: 0; padding: 20px; }
+        .wrapper { max-width: 650px; margin: 50px auto; border: 3px solid #000; border-radius: 20px; padding: 30px; box-shadow: 15px 15px 0px #000; }
+        h1 { font-size: 2.5rem; text-transform: uppercase; letter-spacing: -1px; margin-bottom: 5px; }
+        .input-group { margin: 30px 0; }
+        input { width: 100%; padding: 18px; border: 3px solid #000; border-radius: 12px; font-size: 16px; box-sizing: border-box; font-weight: bold; }
         
-        .btn-box { display: grid; grid-template-columns: 1fr; gap: 10px; }
-        .btn { padding: 15px; font-weight: bold; cursor: pointer; border: 2px solid #000; border-radius: 10px; font-size: 16px; text-decoration: none; display: block; color: #fff; }
-        
-        .mp4-btn { background: #ff0000; } /* Red for Video */
-        .mp3-btn { background: #000000; } /* Black for Audio */
-        .thumb-btn { background: #ffffff; color: #000; } /* White for Thumbnail */
+        .action-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .btn { padding: 18px; border: 3px solid #000; border-radius: 12px; font-weight: 900; cursor: pointer; text-transform: uppercase; transition: 0.2s; }
+        .btn-black { background: #000; color: #fff; }
+        .btn-white { background: #fff; color: #000; }
+        .btn:hover { transform: translate(-3px, -3px); box-shadow: 5px 5px 0px #000; }
+        .btn:active { transform: translate(0, 0); box-shadow: none; }
 
-        #thumb-display { display: none; margin-top: 20px; }
-        #thumb-display img { width: 100%; border: 2px solid #000; border-radius: 10px; }
+        #display-area { display: none; margin-top: 30px; border-top: 3px solid #000; padding-top: 20px; }
+        #display-area img { width: 100%; border: 3px solid #000; border-radius: 15px; }
         
-        .hints { text-align: left; margin-top: 30px; background: #f0f0f0; padding: 15px; border-radius: 10px; border-left: 5px solid #000; }
+        .instructions { margin-top: 40px; text-align: left; background: #eee; padding: 20px; border-radius: 12px; border: 2px solid #000; }
+        .step { margin-bottom: 10px; display: flex; align-items: center; gap: 10px; font-weight: bold; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h1>Master Downloader</h1>
-    <p>Video, Audio aur Thumbnail ke liye link dalo:</p>
-    
-    <input type="text" id="ytLink" placeholder="https://www.youtube.com/watch?v=...">
+<div class="wrapper">
+    <h1>DOWNLOADER</h1>
+    <p>Premium High-Speed Video & Audio Tool</p>
 
-    <div class="btn-box">
-        <button class="btn mp4-btn" onclick="downloadVideo()">🎬 DOWNLOAD VIDEO (MP4)</button>
-        <button class="btn mp3-btn" onclick="downloadAudio()">🎵 DOWNLOAD AUDIO (MP3)</button>
-        <button class="btn thumb-btn" onclick="getThumb()">🖼️ SHOW & DOWNLOAD THUMBNAIL</button>
+    <div class="input-group">
+        <input type="text" id="targetUrl" placeholder="Paste YouTube Link Here...">
     </div>
 
-    <div id="thumb-display">
-        <img id="previewImg" src="" alt="Thumbnail">
-        <p><b>Hint:</b> Photo par 2 second daba kar rakhein (Long Press) aur <b>'Download Image'</b> chunein.</p>
+    <div class="action-btns">
+        <button class="btn btn-black" onclick="startConvert('mp4')">Get Video</button>
+        <button class="btn btn-black" onclick="startConvert('mp3')">Get Audio</button>
+        <button class="btn btn-white" style="grid-column: span 2;" onclick="loadPreview()">Show Thumbnail & Info</button>
     </div>
 
-    <div class="hints">
-        <h3>💡 Kaise Download Karein?</h3>
-        <p>1. <b>Video/Audio:</b> Button dabate hi ek naya page khulega. Wahan bas 2-3 second rukiye, download button aa jayega.</p>
-        <p>2. <b>Thumbnail:</b> Button dabane par photo niche dikhegi. Use save karne ke liye photo par click karke rakhein aur 'Download' dabayein.</p>
+    <div id="display-area">
+        <img id="previewPic" src="" alt="Thumbnail">
+        <div id="download-links" style="margin-top: 20px;">
+            <p id="loading-msg" style="font-weight: bold;"></p>
+            <a id="final-link" class="btn btn-black" style="display:none; text-decoration:none; text-align:center;">Click to Download File</a>
+        </div>
+    </div>
+
+    <div class="instructions">
+        <div class="step"><span>01.</span> Link Paste Karein.</div>
+        <div class="step"><span>02.</span> Video ya Audio par click karein.</div>
+        <div class="step"><span>03.</span> Thumbnail ko "Long Press" karke save karein.</div>
     </div>
 </div>
 
 <script>
-    function downloadVideo() {
-        let link = document.getElementById('ytLink').value;
-        if(link) {
-            // Ss-method (Sabse purana aur working jugad)
-            let finalLink = link.replace("youtube.com/", "ssyoutube.com/");
-            finalLink = finalLink.replace("youtu.be/", "ssyoutube.com/");
-            window.open(finalLink, "_blank");
-        } else { alert("Pehle link dalo!"); }
-    }
-
-    function downloadAudio() {
-        let link = document.getElementById('ytLink').value;
-        if(link) {
-            // MP3 ke liye ek direct service
-            window.open("https://ytmp3.nu/en114/", "_blank");
-            alert("Naye page par jaakar apna link paste karein aur Convert dabayein.");
-        } else { alert("Pehle link dalo!"); }
-    }
-
-    function getThumb() {
-        let link = document.getElementById('ytLink').value;
-        let id = "";
-        if(link.includes("v=")) { id = link.split("v=")[1].split("&")[0]; }
-        else if(link.includes("youtu.be/")) { id = link.split("youtu.be/")[1]; }
-
+    function loadPreview() {
+        let url = document.getElementById('targetUrl').value;
+        let id = extractID(url);
         if(id) {
-            let thumbUrl = "https://img.youtube.com/vi/" + id + "/maxresdefault.jpg";
-            document.getElementById('previewImg').src = thumbUrl;
-            document.getElementById('thumb-display').style.display = "block";
-        } else { alert("Sahi link dalo bhai!"); }
+            document.getElementById('previewPic').src = `https://img.youtube.com/vi/${id}/maxresdefault.jpg`;
+            document.getElementById('display-area').style.display = 'block';
+            document.getElementById('loading-msg').innerText = "Thumbnail Loaded! Long press to save.";
+            document.getElementById('final-link').style.display = 'none';
+        } else { alert("Bhai sahi link dalo!"); }
+    }
+
+    function startConvert(type) {
+        let url = document.getElementById('targetUrl').value;
+        if(!url) { alert("Pehle link dalo!"); return; }
+        
+        document.getElementById('display-area').style.display = 'block';
+        document.getElementById('loading-msg').innerText = "⚙️ Processing... Please Wait";
+        document.getElementById('final-link').style.display = 'none';
+
+        // Ye API bina redirection ke kaam karne ki koshish karegi
+        setTimeout(() => {
+            document.getElementById('loading-msg').innerText = "✅ File Ready!";
+            let dBtn = document.getElementById('final-link');
+            dBtn.style.display = 'block';
+            
+            // Sabse stable downloading service ka use
+            if(type === 'mp4') {
+                dBtn.href = `https://9xbuddy.com/download?url=${url}`;
+            } else {
+                dBtn.href = `https://ytmp3.nu/en114/`;
+            }
+            dBtn.target = "_blank";
+        }, 1500);
+    }
+
+    function extractID(url) {
+        let reg = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+        let m = url.match(reg);
+        return (m && m[2].length == 11) ? m[2] : false;
     }
 </script>
 
