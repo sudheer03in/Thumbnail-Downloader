@@ -3,109 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HD YouTube Thumbnail Downloader | Fast & Free</title>
+    <title>HD Thumbnail Downloader | Step-by-Step Guide</title>
     <style>
-        body { 
-            font-family: 'Inter', -apple-system, sans-serif; 
-            background-color: #ffffff; 
-            color: #1d1d1f; 
-            margin: 0; 
-            padding: 20px; 
-            line-height: 1.6;
-        }
-        .container { 
-            max-width: 800px; 
-            margin: 40px auto; 
-            text-align: center;
-        }
-        h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 10px; }
-        p.subtitle { color: #6e6e73; margin-bottom: 30px; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #ffffff; color: #000000; margin: 0; padding: 20px; line-height: 1.6; }
+        .container { max-width: 700px; margin: 40px auto; text-align: center; }
+        h1 { font-size: 2.2rem; font-weight: 800; margin-bottom: 10px; }
+        p.subtitle { color: #555; margin-bottom: 30px; }
         
-        .search-box {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-bottom: 40px;
-        }
-        input { 
-            padding: 18px; 
-            border: 2px solid #e5e5e7; 
-            border-radius: 12px; 
-            font-size: 16px;
-            outline: none;
-            transition: border-color 0.3s;
-        }
-        input:focus { border-color: #1d1d1f; }
+        .search-box { display: flex; flex-direction: column; gap: 15px; margin-bottom: 30px; }
+        input { padding: 15px; border: 2px solid #000; border-radius: 10px; font-size: 16px; outline: none; }
+        button { background: #000; color: #fff; border: none; padding: 15px; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; }
         
-        button { 
-            background: #1d1d1f; 
-            color: white; 
-            border: none; 
-            padding: 18px; 
-            border-radius: 12px; 
-            font-size: 16px; 
-            font-weight: 600; 
-            cursor: pointer;
-            transition: opacity 0.3s;
-        }
-        button:hover { opacity: 0.9; }
+        #result { display: none; margin-top: 30px; padding: 20px; border: 1px solid #eee; border-radius: 15px; }
+        img { width: 100%; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        
+        .download-btn { display: inline-block; margin-top: 20px; background: #2ecc71; color: white; text-decoration: none; padding: 12px 30px; border-radius: 8px; font-weight: bold; cursor: pointer; border: none; }
 
-        #result { 
-            display: none; 
-            margin-top: 40px; 
-            border-top: 1px solid #e5e5e7; 
-            padding-top: 40px; 
-        }
-        img { width: 100%; border-radius: 16px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
-        
-        .download-btn { 
-            display: inline-block;
-            margin-top: 20px;
-            background: #0071e3; 
-            color: white; 
-            text-decoration: none; 
-            padding: 15px 40px; 
-            border-radius: 30px; 
-            font-weight: 600; 
-        }
-
-        .guide-section {
-            margin-top: 80px;
-            text-align: left;
-            background: #f5f5f7;
-            padding: 30px;
-            border-radius: 20px;
-        }
-        .guide-section h2 { margin-top: 0; }
-        .steps { padding-left: 20px; }
-        .steps li { margin-bottom: 10px; font-weight: 500; }
+        .guide-section { margin-top: 60px; text-align: left; background: #fafafa; padding: 25px; border-radius: 15px; border: 1px solid #eaeaea; }
+        .guide-item { display: flex; align-items: center; margin-bottom: 15px; gap: 15px; }
+        .icon { font-size: 24px; background: #fff; padding: 10px; border-radius: 50%; border: 1px solid #ddd; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; }
+        .guide-text { font-size: 15px; color: #333; }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1>Thumbnail Downloader</h1>
-        <p class="subtitle">Download any YouTube video thumbnail in Ultra HD Quality.</p>
+        <h1>HD Thumbnail Downloader</h1>
+        <p class="subtitle">YouTube video ka link dalo aur HD image download karo.</p>
 
         <div class="search-box">
-            <input type="text" id="videoUrl" placeholder="YouTube video link yahan paste karein...">
-            <button onclick="getThumbnail()">Get HD Thumbnail</button>
+            <input type="text" id="videoUrl" placeholder="Yahan link paste karein...">
+            <button onclick="getThumbnail()">Show Thumbnail</button>
         </div>
 
         <div id="result">
-            <img id="thumbImg" src="" alt="YouTube Thumbnail">
-            <a id="downloadLink" class="download-btn" href="" target="_blank" download="thumbnail.jpg">Download Image</a>
+            <img id="thumbImg" src="" alt="Thumbnail">
+            <button class="download-btn" onclick="downloadImage()">⬇️ Download HD Image</button>
         </div>
 
         <div class="guide-section">
-            <h2>YouTube Thumbnail Kaise Download Karein?</h2>
-            <ul class="steps">
-                <li>Sabse pehle YouTube par jayein aur wo video kholein jiska thumbnail aapko chahiye.</li>
-                <li>Video ke 'Share' button par click karke uska <b>Link Copy</b> karein.</li>
-                <li>Ab hamari website par aakar us link ko upar diye gaye box mein paste karein.</li>
-                <li>'Get HD Thumbnail' button par click karein.</li>
-                <li>Thumbnail niche dikh jayega, ab 'Download Image' par click karke use save kar lein.</li>
-            </ul>
+            <h2 style="text-align: center; margin-bottom: 25px;">Download Kaise Karein? (3 Steps)</h2>
+            
+            <div class="guide-item">
+                <div class="icon">🔗</div>
+                <div class="guide-text"><b>Step 1:</b> YouTube App par jao, video ka <b>'Share'</b> button dabao aur <b>'Copy Link'</b> karo.</div>
+            </div>
+
+            <div class="guide-item">
+                <div class="icon">📥</div>
+                <div class="guide-text"><b>Step 2:</b> Is website par aakar link ko box mein <b>Paste</b> karein aur button dabayein.</div>
+            </div>
+
+            <div class="guide-item">
+                <div class="icon">🖼️</div>
+                <div class="guide-text"><b>Step 3:</b> Thumbnail dikhne par <b>'Download HD Image'</b> par click karein. Aapka photo gallery mein save ho jayega.</div>
+            </div>
         </div>
     </div>
 
@@ -119,12 +71,22 @@
             if (videoId) {
                 let imgUrl = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
                 document.getElementById('thumbImg').src = imgUrl;
-                document.getElementById('downloadLink').href = imgUrl;
                 document.getElementById('result').style.display = "block";
-                window.scrollTo({ top: document.getElementById('result').offsetTop, behavior: 'smooth' });
-            } else { 
-                alert("Bhai, sahi YouTube URL toh daalo!"); 
-            }
+            } else { alert("Sahi link dalo bhai!"); }
+        }
+
+        async function downloadImage() {
+            const imageSrc = document.getElementById('thumbImg').src;
+            const response = await fetch(imageSrc);
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            a.download = 'youtube-thumbnail.jpg';
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
         }
     </script>
 </body>
